@@ -1,0 +1,66 @@
+<div id="fb-root"></div>
+<script language="javascript">
+
+window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '<%= Facebook::APP_ID %>', // App ID
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+
+    // Additional initialization code here
+    FB.getLoginStatus(function(response) {
+	  if (response.status === 'connected') {
+	    // the user is logged in and has authenticated your
+	    // app, and response.authResponse supplies
+	    // the user's ID, a valid access token, a signed
+	    // request, and the time the access token 
+	    // and signed request each expire
+	    var uid = response.authResponse.userID;
+	    var accessToken = response.authResponse.accessToken;
+	    
+	  } else if (response.status === 'not_authorized') {
+	    // the user is logged in to Facebook, 
+	    // but has not authenticated your app
+	  } else {
+	    // the user isn't logged in to Facebook.
+	  }
+	 });
+
+
+
+  
+};
+function FBLogOut(){
+  FB.logout(function(response) {
+    location.href="/login"
+  });
+}
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+
+</script>
+
+<div id="fb_auth_button">
+	<a href="#" onclick="FBLogOut();">Logout</a> 
+<table border="0">
+ <% if @friends %>
+ <% for friend in @friends %>
+ <tr>
+ <td><img src="<%=h friend["pic_square"]%>"><b><%=h friend["name"]%> </b></td>
+ </tr>
+ 
+ <tr>
+ <td>&ndash;</td>
+ </tr>
+ <% end %>
+ <% end %>
+</table>
